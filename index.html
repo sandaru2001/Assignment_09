@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 09</title>
+  <style>
+
+      #sec {
+          width: fit-content;
+          height: fit-content;
+
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          margin: auto;
+      }
+    .box {
+        width: 100px;
+        height: 25px;
+        border: 1px solid black;
+        display: inline-block;
+    }
+     #btn1 {
+         width: fit-content;
+         height: fit-content;
+
+         position: absolute;
+         top: 50px;
+         bottom: 0;
+         left: 0;
+         right: 130px;
+         margin: auto;
+     }#btn2 {
+         width: fit-content;
+         height: fit-content;
+
+         position: absolute;
+         top: 50px;
+         bottom: 0;
+         left: 0;
+         right: 20px;
+         margin: auto;
+     }
+  </style>
+</head>
+<body>
+
+<section id="sec">
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+</section>
+<section id="btn">
+    <button id="btn1">Start</button>
+    <button id="btn2">Stop</button>
+</section>
+
+<audio src="assests/audio/audio.mp3" id="audio"></audio>
+<script src="assests/lib/jquery.min.js"></script>
+
+<script>
+    var current_Light = -1;
+    var current_Direction = "RIGHT";
+    var light_Count = 6;
+    var intervalId = null;
+
+    const updateLightPanel = () => {
+      $(".box").css("background", "white");
+
+      if (current_Direction === "RIGHT") {
+          current_Light++;
+          $(".box").eq(current_Light).css("background", "#FF2400");
+          if (current_Light -1>0) {
+              $(".box").eq(current_Light).css("background", "#ffcbd1");
+          }
+          if (current_Light === light_Count - 1) {
+              current_Direction = "LEFT";
+          }
+      }else {
+          current_Light--;
+          $(".box").eq(current_Light).css("background", "#FF2400");
+          $(".box").eq(current_Light +1).css("background", "#ffcbd1");
+          if (current_Light === 0) {
+              current_Direction = "RIGHT";
+          }
+      }
+    }
+
+    $("button:first-child").on("click", () => {
+        if (intervalId === null) {
+            intervalId = setInterval(updateLightPanel, 100);
+            $("#audio")[0].play();
+        }
+    });
+
+    $("button:nth-child(2)").on("click", () => {
+        clearInterval(intervalId);
+        intervalId = null;
+        $("#audio")[0].pause();
+    });
+</script>
+</body>
+</html>
